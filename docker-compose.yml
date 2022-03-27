@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  trailcams:
+    container_name: trailcams
+    build:
+      context: .
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - $HOME/.aws/:/home/.aws/
+    ports:
+      - ${SERVER_PORT}:3000
+      - 9229:9229
+    command: npm run start:debug
+    env_file:
+      - .env
+    networks:
+      - trail-network
+    depends_on:
+      - postgres
+  postgres:
+    container_name: postgres
+    image: postgis/postgis
+    networks:
+      - trail-network
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE_NAME}
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    hostname: postgres-local
+networks:
+  trail-network:
+volumes:
+  pgdata:
