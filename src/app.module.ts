@@ -14,7 +14,16 @@ import { CamerasModule } from './cameras/cameras.module';
         ConfigModule.forRoot({
             isGlobal: true,
         }),
-        TypeOrmModule.forRoot(),
+        TypeOrmModule.forRoot({
+            type: 'postgres',
+            host: 'localhost',
+            port: 5432,
+            username: 'user',
+            password: 'pass',
+            database: 'trailcams',
+            entities: ['dist/**/*.entity{.ts,.js}'],
+            synchronize: true,
+        }),
         ImagesModule,
         AuthModule,
         UsersModule,

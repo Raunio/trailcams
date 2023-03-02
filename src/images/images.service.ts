@@ -10,7 +10,7 @@ import { ValidatorUtil } from 'src/util/validator.util';
 import { ServiceStateException } from 'src/exception/service.state.exception';
 import { S3ListObjectsResponse } from 'src/aws/s3/s3.list-objects.response';
 import { MimetypesUtil } from 'src/util/mimetypes.util';
-import { randomUUID } from 'node:crypto';
+import { v4 as uuidv4 } from 'uuid';
 import { S3Constants } from 'src/aws/s3/s3.constants';
 import { S3ListObjectsRequest } from 'src/aws/s3/s3.list-objects.request';
 import { S3GetObjectRequest } from 'src/aws/s3/s3.get-object.request';
@@ -136,7 +136,7 @@ export class ImagesService {
         }/${date.getDate()}`;
 
         const filename =
-            randomUUID().toString() + MimetypesUtil.getExtension(mimetype);
+            uuidv4().toString() + MimetypesUtil.getExtension(mimetype);
 
         return `${folder}/${filename}`;
     }
