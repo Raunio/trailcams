@@ -26,6 +26,8 @@ import { CreateAndAttachPolicyRequest } from './iam.create-and-attach-policy.req
 import { ValidatorUtil } from 'src/util/validator.util';
 import { CreateAndAttachPolicyResponse } from './iam.create-and-attach-policy.response';
 import { StringUtil } from 'src/util/string.util';
+import { IAMConstants } from './iam.constants';
+import { S3Constants } from '../s3/s3.constants';
 
 @Injectable()
 export class IAMService {
@@ -56,9 +58,9 @@ export class IAMService {
             );
         }
         const createUserCommand = new CreateUserCommand({
-            UserName: `trailcams-iam-user-${username}-${StringUtil.randomString(
-                5,
-            )}`,
+            UserName: `${
+                IAMConstants.IAM_USER_PREFIX
+            }${username}-${StringUtil.randomString(5)}`,
             PermissionsBoundary: this.configService.get<string>(
                 ConfigConstants.KEY_IAM_USER_POLICY_TEMPLATE_ARN,
             ),
@@ -87,7 +89,7 @@ export class IAMService {
 
         const createPolicyCommand: CreatePolicyCommand =
             new CreatePolicyCommand({
-                PolicyName: request.iamUserName + '--user-policy',
+                PolicyName: `${request.iamUserName}${IAMConstants.IAM_USER_POLICY_POSTFIX}`,
                 PolicyDocument: JSON.stringify({
                     Version: '2012-10-17',
                     Statement: [
@@ -102,8 +104,8 @@ export class IAMService {
                             Resource: [
                                 `arn:aws:s3:::${request.s3BucketName}`,
                                 `arn:aws:s3:::${request.s3BucketName}`,
-                                `arn:aws:s3:::${request.s3BucketName}--thumbnails`,
-                                `arn:aws:s3:::${request.s3BucketName}--thumbnails/*`,
+                                `arn:aws:s3:::${request.s3BucketName}${S3Constants.THUMBNAILS.BUCKET_POSTFIX}`,
+                                `arn:aws:s3:::${request.s3BucketName}${S3Constants.THUMBNAILS.BUCKET_POSTFIX}/*`,
                                 this.configService.get<string>(
                                     ConfigConstants.KEY_SES_IDENTITY_NAME,
                                 ),

@@ -61,7 +61,7 @@ export class ImagesService {
         thumbnail?: boolean,
     ): Promise<S3ObjectDTO> {
         const bucket = thumbnail
-            ? user.bucket + S3Constants.THUMBNAILS_BUCKET_POSTFIX
+            ? user.bucket + S3Constants.THUMBNAILS.BUCKET_POSTFIX
             : user.bucket;
 
         const s3GetObjectResponse = await this.s3Service.getObject(

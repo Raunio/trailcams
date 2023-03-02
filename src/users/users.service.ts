@@ -39,7 +39,7 @@ export class UsersService {
         if (existingUser) {
             throw new UserAlreadyExistsException(createUserRequest.username);
         }
-        const bucketName = `trailcams--${createUserRequest.username}`;
+        const bucketName = `${S3Constants.USER_BUCKET_PREFIX}${createUserRequest.username}`;
 
         // Create bucket
         const createBucketRes: S3CreateBucketResponse =
@@ -54,7 +54,7 @@ export class UsersService {
         // Create thumbnails bucket
         const createThumbnailsBucketRes: S3CreateBucketResponse =
             await this.s3Service.createBucket(
-                bucketName + S3Constants.THUMBNAILS_BUCKET_POSTFIX,
+                bucketName + S3Constants.THUMBNAILS.BUCKET_POSTFIX,
             );
 
         if (
