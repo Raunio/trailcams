@@ -98,7 +98,6 @@ export class IAMService {
                             Action: [
                                 's3:PutObject',
                                 's3:GetObject',
-                                'ses:SendRawEmail',
                                 's3:ListBucket',
                             ],
                             Resource: [
@@ -106,10 +105,23 @@ export class IAMService {
                                 `arn:aws:s3:::${request.s3BucketName}`,
                                 `arn:aws:s3:::${request.s3BucketName}${S3Constants.THUMBNAILS.BUCKET_POSTFIX}`,
                                 `arn:aws:s3:::${request.s3BucketName}${S3Constants.THUMBNAILS.BUCKET_POSTFIX}/*`,
+                            ],
+                        },
+                        {
+                            Effect: 'Allow',
+                            Action: ['ses:SendRawEmail'],
+                            Resource: [
                                 this.configService.get<string>(
                                     ConfigConstants.KEY_SES_IDENTITY_NAME,
                                 ),
                             ],
+                            Condition: {
+                                'ForAllValues:StringEquals': {
+                                    'ses:Recipients': [
+                                        `${request.username}@trailcams.click`,
+                                    ],
+                                },
+                            },
                         },
                     ],
                 }),

@@ -8,4 +8,6 @@ export class ConfigConstants {
         'IAM_USER_POLICY_TEMPLATE_ARN';
     static readonly KEY_THUMBNAIL_LAMBDA_FUNCTION_ARN =
         'THUMBNAIL_LAMBDA_FUNCTION_ARN';
+    static readonly KEY_ATTACHMENT_LAMBDA_FUNCTION_ARN =
+        'ATTACHMENT_LAMBDA_FUNCTION_ARN';
 }

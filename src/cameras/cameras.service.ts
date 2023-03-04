@@ -24,10 +24,13 @@ export class CamerasService {
         await ValidatorUtil.validate(request);
 
         const exsistingCamera = await this.cameraRepository.findOne({
-            name: request.name,
-            user_id: user.id,
+            where: {
+                name: request.name,
+                user_id: user.id,
+            },
         });
 
+        // TODO Let that db handle this
         if (exsistingCamera) {
             throw new CameraAlreadyExistsException(request.name);
         }
@@ -59,7 +62,9 @@ export class CamerasService {
     }
 
     async listCameras(user: AuthenticatedUser) {
-        const cameras = await this.cameraRepository.find({ user_id: user.id });
+        const cameras = await this.cameraRepository.find({
+            where: { user_id: user.id },
+        });
         const cameraList: CameraDTO[] = cameras.map((cam) => {
             return { id: cam.id, location: cam.location, name: cam.name };
         });

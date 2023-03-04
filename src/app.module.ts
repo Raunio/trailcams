@@ -8,6 +8,8 @@ import { LoggerMiddleware } from './middleware/logger.middleware';
 import { HealthController } from './health/health.controller';
 import { RequestIdMiddleware } from './middleware/request-id.middleware';
 import { CamerasModule } from './cameras/cameras.module';
+import { User } from './users/user.entity';
+import { Camera } from './cameras/camera.entity';
 
 @Module({
     imports: [
@@ -21,7 +23,7 @@ import { CamerasModule } from './cameras/cameras.module';
             username: 'user',
             password: 'pass',
             database: 'trailcams',
-            entities: ['dist/**/*.entity{.ts,.js}'],
+            entities: [User, Camera],
             synchronize: true,
         }),
         ImagesModule,

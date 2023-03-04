@@ -6,6 +6,7 @@ import {
     PolicyStatement,
     User,
 } from 'aws-cdk-lib/aws-iam';
+import { StringParameter } from 'aws-cdk-lib/aws-ssm';
 import { Construct } from 'constructs';
 
 export class TrailcamsAPICdkStack extends cdk.Stack {

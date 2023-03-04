@@ -24,7 +24,7 @@ export class UsersService {
     ) {}
 
     async findOne(username: string): Promise<User | undefined> {
-        return this.usersRepository.findOne({ name: username });
+        return this.usersRepository.findOne({ where: { name: username } });
     }
 
     /**
@@ -80,6 +80,7 @@ export class UsersService {
         await this.iamService.createAndAttachPolicy({
             s3BucketName: createBucketRes.bucketName,
             iamUserName: createIamUserRes.username,
+            username: createUserRequest.username,
         });
 
         const hashedPassword = bcrypt.hashSync(

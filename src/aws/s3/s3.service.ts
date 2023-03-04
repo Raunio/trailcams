@@ -210,8 +210,8 @@ export class S3Service {
                 ),
                 mimetype: getObjectOutput.ContentType,
                 timestamp:
-                    getObjectOutput.Metadata.timestamp ||
-                    getObjectOutput.LastModified.toISOString(),
+                    getObjectOutput.Metadata?.timestamp ||
+                    getObjectOutput.LastModified?.toISOString(),
             },
         };
     }

@@ -6,6 +6,7 @@ import {
     PutObjectCommand,
     S3Client,
 } from '@aws-sdk/client-s3';
+import { sdkStreamMixin } from '@aws-sdk/util-stream-node';
 import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { mockClient } from 'aws-sdk-client-mock';
@@ -162,13 +163,22 @@ describe('S3Service', () => {
         });
 
         it('should return expected array of strings when listObjects is called', () => {
-            mockS3
-                .on(ListObjectsV2Command)
-                .resolves({ Contents: [{ Key: 'a' }, { Key: 'b' }] });
+            const date = new Date();
+            mockS3.on(ListObjectsV2Command).resolves({
+                Contents: [
+                    { Key: 'a', LastModified: date },
+                    { Key: 'b', LastModified: date },
+                ],
+            });
 
             expect(
                 service.listObjects(mockS3ListRequest()),
-            ).resolves.toStrictEqual({ objects: [{ key: 'a' }, { key: 'b' }] });
+            ).resolves.toStrictEqual({
+                objects: [
+                    { key: 'a', timestamp: date.toISOString() },
+                    { key: 'b', timestamp: date.toISOString() },
+                ],
+            });
         });
     });
 
@@ -217,11 +227,8 @@ describe('S3Service', () => {
 
         it('should return expected key and base64 encoded content when getObject is called', () => {
             mockS3.on(GetObjectCommand).resolves({
-                Body: Readable.from([Buffer.from([1])]),
+                Body: sdkStreamMixin(Readable.from([Buffer.from([1])])),
                 ContentType: 'image/png',
-                Metadata: {
-                    timestamp: 'timestamp',
-                },
             });
 
             expect(
@@ -236,7 +243,7 @@ describe('S3Service', () => {
                     key: 'a',
                     data: Buffer.from([1]).toString('base64'),
                     mimetype: 'image/png',
-                    timestamp: 'timestamp',
+                    timestamp: undefined,
                 },
             });
         });
