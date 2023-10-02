@@ -1,5 +1,5 @@
 import { HttpStatus } from '@nestjs/common';
-import { StatusCode } from 'src/constants/status.code';
+import { ResponseStatus } from 'src/constants/status.code';
 import { TrailException } from 'src/exception/trail.exception';
 
 export class ObjectNotFoundException extends TrailException {
@@ -8,7 +8,7 @@ export class ObjectNotFoundException extends TrailException {
         super(
             msg + ` from bucket ${bucket}`,
             HttpStatus.NOT_FOUND,
-            StatusCode.OBJECT_NOT_FOUND,
+            ResponseStatus.OBJECT_NOT_FOUND,
             msg,
         );
     }

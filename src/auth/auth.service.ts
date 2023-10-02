@@ -5,19 +5,31 @@ import { UsersService } from 'src/users/users.service';
 import { AuthRequest } from './auth.request';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Repository } from 'typeorm';
+import { Login } from './login.entity';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class AuthService {
     constructor(
+        @InjectRepository(Login)
+        private readonly repository: Repository<Login>,
         private readonly usersService: UsersService,
         private readonly jwtService: JwtService,
     ) {}
 
     async validateUser(request: AuthRequest) {
-        const user: User = await this.usersService.findOne(request.username);
+        const login: Login = await this.repository.findOne({
+            where: { name: request.username },
+        });
 
-        if (user && (await bcrypt.compare(request.password, user.password))) {
-            return user;
+        if (login && (await bcrypt.compare(request.password, login.password))) {
+            const user = this.usersService.findOne(login.id);
+            if (!user) {
+                throw new AuthException(
+                    'Matched credentials but no user is associated with them!',
+                );
+            }
         } else {
             throw new AuthException('Invalid credentials');
         }

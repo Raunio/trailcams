@@ -11,6 +11,9 @@ export class TestUtil {
     public readonly MOCK_USER_PASSWORD_HASHED: string;
     public readonly MOCK_DEFAULT_BUCKET_NAME: string;
     public readonly MOCK_IAM_USERNAME: string;
+    public readonly MOCK_LOGIN_ID: string;
+    public readonly MOCK_GROUP_ID: string;
+    public readonly MOCK_GROUP_NAME: string;
 
     private constructor() {
         this.MOCK_USERNAME = randomUUID().toString();
@@ -22,6 +25,9 @@ export class TestUtil {
         );
         this.MOCK_DEFAULT_BUCKET_NAME = randomUUID().toString();
         this.MOCK_IAM_USERNAME = randomUUID().toString();
+        this.MOCK_LOGIN_ID = randomUUID().toString();
+        this.MOCK_GROUP_ID = randomUUID().toString();
+        this.MOCK_GROUP_NAME = randomUUID().toString();
     }
 
     private static instance: TestUtil;
@@ -39,10 +45,20 @@ export class TestUtil {
     getMockUserEntity(): User {
         return {
             id: this.MOCK_USER_ID,
-            name: this.MOCK_USERNAME,
-            password: this.MOCK_USER_PASSWORD_HASHED,
+            login: {
+                id: this.MOCK_LOGIN_ID,
+                name: this.MOCK_USERNAME,
+                password: this.MOCK_USER_PASSWORD_HASHED,
+            },
+            login_id: this.MOCK_LOGIN_ID,
             default_bucket: this.MOCK_DEFAULT_BUCKET_NAME,
             iam_username: this.MOCK_IAM_USERNAME,
+            group: {
+                id: this.MOCK_GROUP_ID,
+                name: this.MOCK_GROUP_NAME,
+                users: null,
+            },
+            group_id: this.MOCK_GROUP_ID,
         };
     }
 

@@ -6,5 +6,4 @@ npm-debug.log
 .DS_Store
 .vscode
 .data
-.env
 test/ses.e2e-spec.ts

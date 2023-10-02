@@ -17,7 +17,7 @@ export class TrailException extends HttpException {
     constructor(
         message: string | Record<any, string>,
         httpStatus: number,
-        private readonly businessStatus?,
+        private readonly businessStatus?: string,
         private readonly businessMessage = message,
     ) {
         super(message, httpStatus);

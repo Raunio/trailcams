@@ -8,6 +8,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { LocalStrategy } from './strategy/local.strategy';
+import { Login } from './login.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
     imports: [
@@ -17,6 +19,7 @@ import { LocalStrategy } from './strategy/local.strategy';
             secret: AuthConstants.JWT_SECRET,
             signOptions: { expiresIn: '120s' },
         }),
+        TypeOrmModule.forFeature([Login]),
     ],
     controllers: [AuthController],
     providers: [AuthService, LocalStrategy, JwtStrategy, IAMService],

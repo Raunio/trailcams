@@ -10,6 +10,8 @@ import { RequestIdMiddleware } from './middleware/request-id.middleware';
 import { CamerasModule } from './cameras/cameras.module';
 import { User } from './users/user.entity';
 import { Camera } from './cameras/camera.entity';
+import { UserGroup } from './users/user.group.entity';
+import { Login } from './auth/login.entity';
 
 @Module({
     imports: [
@@ -23,7 +25,7 @@ import { Camera } from './cameras/camera.entity';
             username: 'user',
             password: 'pass',
             database: 'trailcams',
-            entities: [User, Camera],
+            entities: [User, Camera, Login, UserGroup],
             synchronize: true,
         }),
         ImagesModule,

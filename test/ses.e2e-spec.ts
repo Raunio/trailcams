@@ -2,14 +2,14 @@ import * as nodemailer from 'nodemailer';
 import * as fs from 'fs';
 
 describe('send test email', () => {
-    const smptUser = '';
-    const smptPassword = '';
+    const smptUser = 'AKIASXL6VVILKQUGXSWD';
+    const smptPassword = 'BGWpAvP+IZ/9u5rktbzlXWaIAptHIIVaQjC3EhK2fduM';
 
     it('should send test email', async () => {
         const transporter = nodemailer.createTransport({
             host: 'email-smtp.eu-west-1.amazonaws.com',
-            port: 25,
-            secure: false, // true for 465, false for other ports
+            port: 465,
+            secure: true, // true for 465, false for other ports
             auth: {
                 user: smptUser,
                 pass: smptPassword,
@@ -27,8 +27,8 @@ describe('send test email', () => {
 
         // send mail with defined transport object
         await transporter.sendMail({
-            from: 'test-camera2@trailcams-test.com', // sender address
-            to: 'matti.mallikas@trailcams-test.com', // list of receivers
+            from: 'test-user@trailcams.click', // sender address
+            to: 'reijo.mallikas@trailcams.click', // list of receivers
             subject: 'Hello ✔', // Subject line
             text: 'Hello world?', // plain text body
             html: '<b>Hello world?</b>', // html body

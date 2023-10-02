@@ -118,6 +118,7 @@ describe('IAMService', () => {
 
             expect(
                 service.createAndAttachPolicy({
+                    username: TestUtil.getInstance().MOCK_USERNAME,
                     iamUserName: TestUtil.getInstance().MOCK_IAM_USERNAME,
                     s3BucketName:
                         TestUtil.getInstance().MOCK_DEFAULT_BUCKET_NAME,
@@ -130,6 +131,7 @@ describe('IAMService', () => {
 
             expect(
                 service.createAndAttachPolicy({
+                    username: TestUtil.getInstance().MOCK_USERNAME,
                     iamUserName: TestUtil.getInstance().MOCK_IAM_USERNAME,
                     s3BucketName:
                         TestUtil.getInstance().MOCK_DEFAULT_BUCKET_NAME,
@@ -143,6 +145,7 @@ describe('IAMService', () => {
 
             expect(
                 service.createAndAttachPolicy({
+                    username: TestUtil.getInstance().MOCK_USERNAME,
                     iamUserName: TestUtil.getInstance().MOCK_IAM_USERNAME,
                     s3BucketName:
                         TestUtil.getInstance().MOCK_DEFAULT_BUCKET_NAME,
@@ -156,6 +159,7 @@ describe('IAMService', () => {
 
             expect(
                 service.createAndAttachPolicy({
+                    username: TestUtil.getInstance().MOCK_USERNAME,
                     iamUserName: TestUtil.getInstance().MOCK_IAM_USERNAME,
                     s3BucketName:
                         TestUtil.getInstance().MOCK_DEFAULT_BUCKET_NAME,
@@ -169,6 +173,7 @@ describe('IAMService', () => {
 
             expect(
                 service.createAndAttachPolicy({
+                    username: TestUtil.getInstance().MOCK_USERNAME,
                     iamUserName: TestUtil.getInstance().MOCK_IAM_USERNAME,
                     s3BucketName:
                         TestUtil.getInstance().MOCK_DEFAULT_BUCKET_NAME,

@@ -13,11 +13,11 @@ export class TrailApiResponse<T> {
 
     @IsNumber()
     @ApiPropertyOptional({
-        type: [Number],
+        type: [String],
         description: `Optional response property that describes detailed information 
         about the response for situations where the http status code alone isn't sufficient.`,
     })
-    statusCode?: number;
+    statusCode?: string;
 
     @ApiPropertyOptional({
         type: [String],

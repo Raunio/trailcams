@@ -54,7 +54,7 @@ export class AuthController {
             httpOnly: true,
             domain: 'localhost',
             expires: new Date(Date.now() + 1000 * 60 * 60 * 24),
-        }).send(new TrailApiResponse(undefined));
+        }).send(new TrailApiResponse({}));
     }
 
     @Put('register')

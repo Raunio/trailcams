@@ -13,18 +13,21 @@ import { IAMService } from 'src/aws/iam/iam.service';
 import { ValidatorUtil } from 'src/util/validator.util';
 import { BadServiceResponseException } from 'src/exception/bad.service.response';
 import { S3Constants } from 'src/aws/s3/s3.constants';
+import { Login } from 'src/auth/login.entity';
 
 @Injectable()
 export class UsersService {
     constructor(
         @InjectRepository(User)
         private readonly usersRepository: Repository<User>,
+        @InjectRepository(Login)
+        private readonly loginRepository: Repository<Login>,
         private readonly s3Service: S3Service,
         private readonly iamService: IAMService,
     ) {}
 
-    async findOne(username: string): Promise<User | undefined> {
-        return this.usersRepository.findOne({ where: { name: username } });
+    async findOne(loginId: string): Promise<User | undefined> {
+        return this.usersRepository.findOne({ where: { login_id: loginId } });
     }
 
     /**
@@ -39,6 +42,7 @@ export class UsersService {
         if (existingUser) {
             throw new UserAlreadyExistsException(createUserRequest.username);
         }
+
         const bucketName = `${S3Constants.USER_BUCKET_PREFIX}${createUserRequest.username}`;
 
         // Create bucket
@@ -88,9 +92,15 @@ export class UsersService {
             AuthConstants.BCRYPT_DEFAULT_ROUNDS,
         );
 
-        const user = {
+        const login = {
             name: createUserRequest.username,
             password: hashedPassword,
+        };
+
+        // Create credentials
+        const credentials = await this.loginRepository.create(login);
+
+        const user = {
             default_bucket: createBucketRes.bucketName,
             iam_username: createIamUserRes.username,
         };
@@ -99,7 +109,7 @@ export class UsersService {
         const createdUser = await this.usersRepository.save(user);
 
         return {
-            username: createdUser.name,
+            username: credentials.name,
             default_bucket: createdUser.default_bucket,
         };
     }

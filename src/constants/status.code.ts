@@ -1,7 +1,8 @@
-export enum StatusCode {
-    USERNAME_ALREADY_EXISTS = 1,
-    FILETYPE_NOT_SUPPORTED = 2,
-    USER_HAS_ACCESS_KEY = 3,
-    OBJECT_NOT_FOUND = 4,
-    ENTITY_ALREADY_EXISTS = 5,
-}
+export const ResponseStatus = {
+    USERNAME_ALREADY_EXISTS: 'user-already-exists',
+    USER_NOT_FOUND: 'user-not-found',
+    FILETYPE_NOT_SUPPORTED: 'filetype-not-supported',
+    USER_HAS_ACCESS_KEY: 'user-has-access-key',
+    OBJECT_NOT_FOUND: 'object-not-found',
+    ENTITY_ALREADY_EXISTS: 'entity-already-exists',
+};

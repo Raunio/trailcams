@@ -28,8 +28,7 @@ export class GenericExceptionFilter implements ExceptionFilter {
         );
 
         const body: TrailApiResponse<null> = {
-            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-            message: 'Ei pysty',
+            message: 'An unhandled error occurred.',
             timestamp: new Date().toISOString(),
         };
 

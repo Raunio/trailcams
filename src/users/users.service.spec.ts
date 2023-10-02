@@ -8,6 +8,7 @@ import { User } from './user.entity';
 import { UsersService } from './users.service';
 import { IAMService } from 'src/aws/iam/iam.service';
 import { IAMCreateUserResponse } from 'src/aws/iam/iam.create-user.response';
+import { Login } from 'src/auth/login.entity';
 
 const mockS3Service = () => ({
     createBucket: jest.fn(
@@ -29,11 +30,17 @@ const mockIAMService = () => ({
     createAndAttachPolicy: jest.fn(),
 });
 
+const mockLoginRepository = () => ({
+    findOne: jest.fn(),
+    create: jest.fn(() => TestUtil.getInstance().getMockUserEntity().login),
+});
+
 describe('UsersService', () => {
     let service: UsersService;
     let s3Service: S3Service;
     let iamService: IAMService;
     const repository = mockUsersRepository();
+    const loginRepository = mockLoginRepository();
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -50,6 +57,10 @@ describe('UsersService', () => {
                 {
                     provide: IAMService,
                     useFactory: mockIAMService,
+                },
+                {
+                    provide: getRepositoryToken(Login),
+                    useValue: loginRepository,
                 },
             ],
         }).compile();
@@ -70,6 +81,7 @@ describe('UsersService', () => {
     });
 
     it('should throw UserAlreadyExistsException when createUser is called and repository.findOne returns user', () => {
+        jest.spyOn(repository, 'findOne').mockImplementation(() => new User());
         expect(
             service.createUser({
                 username: TestUtil.getInstance().MOCK_USERNAME,

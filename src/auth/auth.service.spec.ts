@@ -5,6 +5,8 @@ import { UsersService } from 'src/users/users.service';
 import { TestUtil } from 'src/util/test.util';
 import { AuthService } from './auth.service';
 import { IAMService } from 'src/aws/iam/iam.service';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import { Login } from './login.entity';
 
 const mockUsersService = () => ({
     findOne: jest.fn(),
@@ -18,9 +20,14 @@ const mockIamService = () => ({
     createSmptPassword: jest.fn(),
 });
 
+const mockLoginRepository = () => ({
+    findOne: jest.fn(() => TestUtil.getInstance().getMockUserEntity().login),
+});
+
 describe('AuthService', () => {
     let service: AuthService;
     let usersService: UsersService;
+    const repository = mockLoginRepository();
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
@@ -37,6 +44,10 @@ describe('AuthService', () => {
                 {
                     provide: IAMService,
                     useFactory: mockIamService,
+                },
+                {
+                    provide: getRepositoryToken(Login),
+                    useValue: repository,
                 },
             ],
         }).compile();
